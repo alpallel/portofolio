@@ -214,6 +214,12 @@ h1, h2, h3, .brand {
     transform: translateY(-2px);
 }
 
+.social-link:active {
+    border-color: #6592b3 #e3f2fd #e3f2fd #6592b3;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--border-dark);
+}
+
 .social-link-el {
     font-size: 0.85rem;
     font-weight: 600;
