@@ -264,59 +264,79 @@ h1, h2, h3, .brand {
 }
 
 .experience {
-    padding-top: 2rem;
-    padding-bottom: 5rem;
-    border-top: 1px solid var(--line);
+    padding: 3rem 0 5rem;
 }
 
 .experience h2 {
-    font-size: 2rem;
-    margin-bottom: 3rem;
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
 }
 
 .experience-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .experience-item {
-    padding: 0.5rem;
-    /* padding-bottom: 2rem; */
-    border: 3px solid transparent;
-    border-radius: var(--radius);
-    transition: transform 0.5s ease;
+    background: var(--quartz-body);
+    border: 4px solid var(--border-dark);
+    padding: 1.25rem 1.5rem;
+    box-shadow:
+        inset -4px -4px 0 0 var(--quartz-shadow),
+        inset 4px 4px 0 0 var(--quartz-top),
+        5px 5px 0 0 rgba(0, 0, 0, 0.12);
+    transition: transform 0.1s ease, background 0.1s ease;
 }
 
 .experience-item:hover {
-    border-color: var(--color-border);
-    background-color: rgba(0, 13, 80, 0.03);
-    transform: scale(1.05)
+    transform: scale(1.05);
+    background: var(--quartz-top);
 }
 
 .experience-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.4rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
 }
 
 .experience-item h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
 }
 
 .experience-date {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    font-family: var(--font-pixel-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a5175;
+    background: #c3e2f7;
+    border: 2px solid var(--border-dark);
+    padding: 0.1rem 0.6rem;
 }
 
 .experience-organization {
-    color: var(--accent-dark);
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
+    font-family: var(--font-pixel-heading);
+    font-size: 0.65rem;
+    color: var(--diamond-blue);
+    text-shadow: 1px 1px 0 #ffffff;
 }
 
 .site-footer {
