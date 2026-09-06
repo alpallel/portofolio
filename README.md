@@ -1,3 +1,5 @@
+Deployed at: https://alfarrel-ersya-myportofolio.pws.cs.ui.ac.id/
+
 ### Tugas 1
 
 1. Saya memakai elemen 'section' yang cukup membantu untuk membedakan tiap section dan membaca kode dengan lebih mudah daripada dengan menggunakan 'div'. Saya juga memakai 'nav' untuk menambah elemen di navbar.
