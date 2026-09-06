@@ -352,6 +352,7 @@ h1, h2, h3, .brand {
 
 .skills h2 {
     font-size: 1.6rem;
+    padding-bottom: 1rem;
 }
 
 .skills-list {
