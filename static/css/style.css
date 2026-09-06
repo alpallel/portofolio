@@ -299,15 +299,15 @@ h1, h2, h3, .brand {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.4rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.5rem;
 }
 
 .experience-item h3 {
-    font-size: 0.85rem;
+    font-size: clamp(0.7rem, 2vw, 1rem);
     line-height: 1.4;
-    white-space: wrap;
-    overflow: hidden;
+    white-space: normal;
+    overflow-wrap: break-word;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -324,7 +324,7 @@ h1, h2, h3, .brand {
 .experience-date {
     flex-shrink: 0;
     font-family: var(--font-pixel-body);
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
     font-weight: 700;
     color: #1a5175;
     background: #c3e2f7;
