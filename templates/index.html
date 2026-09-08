@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfarrel - Portfolio</title>
+    <title>{{ short_name }} - Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/static/img/kirara.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
 <body>
     <header class="site-header">
         <div class="container">
-            <a href="#profile" class="brand">Alfarrel Ersya Balawa</a>
+            <a href="#profile" class="brand">{{ name }}</a>
             <nav>
                 <a href="#profile">Profile</a>
                 <a href="#experience">Experience</a>
@@ -27,25 +27,25 @@
             <div class="container hero-grid">
                 <div class="hero-identity">
                     <p class="hero-kicker">Computer Science | Universitas Indonesia</p>
-                    <h1>Alfarrel Ersya</h1>
+                    <h1>{{ name }}</h1>
                 </div>
                 <div class="hero-photo">
                     <div class="frame">
-                        <img class="avatar" src="/static/img/profile-picture.jpeg" alt="Photo of Alfarrel">
+                        <img class="avatar" src="/static/img/profile-picture.jpeg" alt="Photo of {{ short_name }}">
                     </div>
                 </div>
                 <div class="hero-details">
                     <div class="bio-box">
-                        <p class="bio">Mahasiswa Ilmu Komputer di Universitas Indonesia. Saya selalu terbuka untuk mengeksplorasi bidang baru dan menemukan bagaimana teknologi dapat memecahkan masalah nyata tanpa harus mengetahui segalanya sekaligus.</p>
+                        <p class="bio">{{ bio }}</p>
                     </div>
                     <dl class="meta-list">
                         <div class="meta-card">
                             <dt>NPM</dt>
-                            <dd>2506656406</dd>
+                            <dd>{{ npm }}</dd>
                         </div>
                         <div class="meta-card">
                             <dt>Program</dt>
-                            <dd>S1 Ilmu Komputer</dd>
+                            <dd>{{ study_program }}</dd>
                         </div>
                     </dl>
                     <div class="social-links">
@@ -184,7 +184,7 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 Alfarrel Ersya Balawa. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
+            <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
         </div>
     </footer>
 </body>
