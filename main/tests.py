@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from main.models import Experience
+from main.models import Experience, Projects
 
 
 class MainTest(TestCase):
@@ -12,6 +12,11 @@ class MainTest(TestCase):
             description="Membantu mahasiswa memahami pengembangan web.",
             category="part-time",
         )
+        self.projects = Projects.objects.create(
+                    title="cool project",
+                    description="very kul",
+                    link="https://github.com/alpallel/portofolio"
+                )
 
     def test_main_url_is_accessible(self):
         response = self.client.get(reverse("main:show_main"))
@@ -56,3 +61,19 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
+
+    def test_projects_page(self):
+        response = self.client.get(reverse("main:show_projects"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "projects.html")
+        self.assertContains(response, self.projects.title)
+        self.assertContains(response, self.projects.description)
+        self.assertContains(response, self.projects.link)
+        self.assertContains(response, f'href="{reverse("main:show_main")}"')
+
+    def test_empty_experience_page(self):
+        Projects.objects.all().delete()
+        response = self.client.get(reverse("main:show_projects"))
+
+        self.assertContains(response, "No project has been added yet")

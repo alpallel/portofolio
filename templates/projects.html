@@ -23,31 +23,25 @@
     </header>
 
     <main>
-        <section class="experience-section" id="experience">
+        <section class="project-section" id="project">
             <div class="container">
-                <p class="section-kicker">Perjalanan saya sejauh ini</p>
-                <h1>Experience</h1>
+                <p class="section-kicker">My projects so far</p>
+                <h1>Projects</h1>
 
-                <div class="experience-grid">
-                    {% for experience in experience_list %}
-                        <article class="experience-card">
-                            <span class="experience-category">
-                                {{ experience.get_category_display }}
-                            </span>
-                            <h2>{{ experience.title }}</h2>
-                            <p class="experience-description">
-                                {{ experience.description }}
+                <div class="project-grid">
+                    {% for project in projects_list %}
+                        <article class="project-card">
+                            <h2>{{ project.title }}</h2>
+                            <p class="project-description">
+                                {{ project.description }}
                             </p>
-
-                            {% if experience.is_ongoing %}
-                                <p class="experience-status">Sedang berlangsung</p>
-                            {% else %}
-                                <p class="experience-status">Selesai</p>
-                            {% endif %}
+                            <a href="{{ project.link }}" class="project-link">
+                                View on GitHub
+                            </a>
                         </article>
                     {% empty %}
                         <p class="empty-state">
-                            Belum ada pengalaman yang ditambahkan.
+                            No project has been added yet.
                         </p>
                     {% endfor %}
                 </div>
