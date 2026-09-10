@@ -15,9 +15,15 @@
         <div class="container">
             <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
             <nav>
-                <a href="{% url 'main:show_main' %}">Profile</a>
-                <a href="{% url 'main:show_experience' %}">Experience</a>
-                <a href="{% url 'main:show_projects' %}">Projects</a>
+                <a href="{% url 'main:show_main' %}">
+                    <button>Profile</button>
+                </a>
+                <a href="{% url 'main:show_experience' %}">
+                    <button>Experience</button> 
+                </a>
+                <a href="{% url 'main:show_projects' %}">
+                    <button>Projects</button>
+                </a>
             </nav>
         </div>
     </header>
@@ -49,18 +55,18 @@
                         </div>
                     </dl>
                     <div class="social-links">
-                        <div class="social-link">
+                        <a href="https://github.com/alpallel" class="social-link">
                             <img src="/static/img/github.svg" alt="GitHub Logo" class="social-link-icon">
-                            <a href="https://github.com/alpallel" class="social-link-el">GitHub</a>
-                        </div>
-                        <div class="social-link">
+                            <p class="social-link-el">GitHub</p>
+                        </a>
+                        <a href="https://www.linkedin.com/in/alfarrel-ersya-balawa-165951312/" class="social-link">
                             <img src="/static/img/linkedin.svg" alt="LinkedIn Logo" class="social-link-icon">
-                            <a href="https://www.linkedin.com/in/alfarrel-ersya-balawa-165951312/" class="social-link-el">LinkedIn</a>
-                        </div>
-                        <div class="social-link">
+                            <p class="social-link-el">LinkedIn</p>
+                        </a>
+                        <a href="mailto:alfarrel.ersya@ui.ac.id" class="social-link">
                             <img src="/static/img/gmail.svg" alt="Email Logo" class="social-link-icon">
-                            <a href="mailto:alfarrel.ersya@ui.ac.id" class="social-link-el">Email</a>
-                        </div>
+                            <p class="social-link-el">Email</p>
+                        </a>
                     </div>
                 </div>
             </div>

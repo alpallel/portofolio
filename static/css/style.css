@@ -85,7 +85,7 @@ h1, h2, h3, .brand {
     border-right: 3px solid var(--border-dark);
 }
 
-.site-header nav a {
+.site-header nav button {
     font-family: var(--font-pixel-body);
     font-size: 1.1rem;
     font-weight: 700;
@@ -98,14 +98,15 @@ h1, h2, h3, .brand {
     box-shadow: inset -2px -2px 0 var(--quartz-shadow), 
                 inset 2px 2px 0 var(--quartz-top);
     transition: transform 0.1s ease;
+    background: rgba(0, 0, 0, 0)
 }
 
-.site-header nav a:hover {
+.site-header nav button:hover {
     background: var(--quartz-top);
     transform: translateY(-2px);
 }
 
-.site-header nav a:active {
+.site-header nav button:active {
     border-color: var(--quartz-top) var(--quartz-shadow) var(--quartz-shadow) var(--quartz-top);
     transform: translateY(4px);
     box-shadow: 0 0 0 var(--border-dark);
