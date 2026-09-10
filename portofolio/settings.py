@@ -150,3 +150,12 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# settings.py
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://example.com",
+    "https://subdomain.example.com",
+    "https://alfarrel-ersya-myportofolio.pws.cs.ui.ac.id",
+]
+
