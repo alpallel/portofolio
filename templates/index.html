@@ -76,39 +76,19 @@
             <div class="container">
                 <h2>Experience</h2>
                 <div class="experience-list">
-                    
+                    {% for experience in experience_list %}
                     <div class="experience-item">
                         <div class="experience-header">
-                            <h3>Staff of Software Engineering Academy</h3>
-                            <span class="experience-date">Apr 2026 - Present</span>
+                            <h3>{{experience.title}}</h3>
+                            <span class="experience-date">{{ experience.started_at_string }} - {{ experience.ended_at_string }}</span>
                         </div>
-                        <p class="experience-organization">COMPFEST</p>
+                        <p class="experience-organization">{{ experience.organization }}</p>
                     </div>
-
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <h3>Software Engineering Super Member</h3>
-                            <span class="experience-date">Jan 2026 - Present</span>
-                        </div>
-                        <p class="experience-organization">Google Developer Group on Campus UI</p>
-                    </div>
-
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <h3>Mentor</h3>
-                            <span class="experience-date">Jun 2026 - Aug 2026</span>
-                        </div>
-                        <p class="experience-organization">Dasar Dasar Pemrograman 0</p>
-                    </div>
-
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <h3>Intern Staff at Departement of Information Technology</h3>
-                            <span class="experience-date">Sep 2025 - Dec 2025</span>
-                        </div>
-                        <p class="experience-organization">BEM Fasilkom UI</p>
-                    </div>
-
+                    {% empty %}
+                        <p class="empty-state">
+                            Belum ada pengalaman yang ditambahkan.
+                        </p>
+                    {% endfor %}
                 </div>
             </div>
         </section>

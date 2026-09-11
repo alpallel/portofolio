@@ -15,6 +15,7 @@ def show_main(request):
             "bagaimana teknologi dapat memecahkan masalah nyata tanpa harus mengetahui "
             "segalanya sekaligus."
         ),
+        "experience_list": Experience.objects.all()
     }
     return render(request, "index.html", context)
 
