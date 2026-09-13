@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ short_name }} - Portfolio</title>
+    <title>{{ short_name }} - Experience</title>
     <link rel="icon" type="image/x-icon" href="/static/img/kirara.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,29 +32,32 @@
         <section class="experience-section" id="experience">
             <div class="container">
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
-                <h1>Experience</h1>
+                <h1 class="page-title">Experience</h1>
 
                 <div class="experience-grid">
                     {% for experience in experience_list %}
                         <article class="experience-card">
-                            <span class="experience-category">
-                                {{ experience.get_category_display }}
-                            </span>
+                            <div class="card-top-row">
+                                <span class="experience-category">
+                                    {{ experience.get_category_display }}
+                                </span>
+                                {% if experience.is_ongoing %}
+                                    <span class="experience-status status-ongoing">Sedang Berlangsung</span>
+                                {% else %}
+                                    <span class="experience-status status-completed">Selesai</span>
+                                {% endif %}
+                            </div>
+
                             <h2>{{ experience.title }}</h2>
+                            
                             <p class="experience-description">
                                 {{ experience.description }}
                             </p>
-
-                            {% if experience.is_ongoing %}
-                                <p class="experience-status">Sedang berlangsung</p>
-                            {% else %}
-                                <p class="experience-status">Selesai</p>
-                            {% endif %}
                         </article>
                     {% empty %}
-                        <p class="empty-state">
-                            Belum ada pengalaman yang ditambahkan.
-                        </p>
+                        <div class="empty-state-box">
+                            <p class="empty-state">Belum ada pengalaman yang ditambahkan.</p>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

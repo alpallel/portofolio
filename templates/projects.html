@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ short_name }} - Portfolio</title>
+    <title>{{ short_name }} - Projects</title>
     <link rel="icon" type="image/x-icon" href="/static/img/kirara.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,23 +32,28 @@
         <section class="project-section" id="project">
             <div class="container">
                 <p class="section-kicker">My projects so far</p>
-                <h1>Projects</h1>
+                <h1 class="page-title">Projects</h1>
 
                 <div class="project-grid">
                     {% for project in projects_list %}
                         <article class="project-card">
-                            <h2>{{ project.title }}</h2>
-                            <p class="project-description">
-                                {{ project.description }}
-                            </p>
-                            <a href="{{ project.link }}" class="project-link">
-                                View on GitHub
+                            <div class="project-card-content">
+                                <span class="project-badge">ITEM #{{ forloop.counter }}</span>
+                                <h2>{{ project.title }}</h2>
+                                <p class="project-description">
+                                    {{ project.description }}
+                                </p>
+                            </div>
+                            
+                            <a href="{{ project.link }}" class="project-link" target="_blank" rel="noopener">
+                                <img src="/static/img/github.svg" alt="GitHub Logo" class="project-btn-icon">
+                                <span>View on GitHub</span>
                             </a>
                         </article>
                     {% empty %}
-                        <p class="empty-state">
-                            No project has been added yet.
-                        </p>
+                        <div class="empty-state-box">
+                            <p class="empty-state">No project has been added yet.</p>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
