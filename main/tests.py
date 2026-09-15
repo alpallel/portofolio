@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from main.models import Experience, Projects
+from main.models import Experience, Project
 
 
 class MainTest(TestCase):
@@ -12,7 +12,7 @@ class MainTest(TestCase):
             description="Membantu mahasiswa memahami pengembangan web.",
             category="part-time",
         )
-        self.projects = Projects.objects.create(
+        self.projects = Project.objects.create(
                     title="cool project",
                     description="very kul",
                     link="https://github.com/alpallel/portofolio"
@@ -73,7 +73,7 @@ class MainTest(TestCase):
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
 
     def test_empty_experience_page(self):
-        Projects.objects.all().delete()
+        Project.objects.all().delete()
         response = self.client.get(reverse("main:show_projects"))
 
         self.assertContains(response, "No project has been added yet")

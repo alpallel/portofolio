@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Projects, Experience 
+from .models import Project, Experience 
 
 # Register your model here
-admin.site.register(Projects)
+admin.site.register(Project)
 admin.site.register(Experience)
