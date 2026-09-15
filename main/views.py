@@ -45,7 +45,7 @@ def show_projects(request):
     context = {
         "name": "Alfarrel Ersya Balawa",
         "short_name": "Alfarrel",
-        "projects_list": Project.objects.all(),
+        "project_list": Project.objects.all(),
         "title_query": title_query,
     }
     return render(request, "projects.html", context)
@@ -74,3 +74,13 @@ def get_projects_json(request):
 
     projects_json = serializers.serialize("json", projects)
     return HttpResponse(projects_json, content_type="application/json")
+
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+
+    if request.method == "POST":
+        project.delete()
+        messages.success(request, "Project berhasil dihapus!")
+        return redirect("main:show_projects")
+
+    return redirect("main:show_projects")
