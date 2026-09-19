@@ -1,57 +1,114 @@
 {% extends "base.html" %}
-{% block meta %}
-    <title>Projects - {{ name }}</title>
-{% endblock meta %}
+
+{% block title %}Projects - {{ name }}{% endblock title %}
+
 {% block content %}
     <main>
-        <section class="experience-section" id="experience">
+        <section class="project-section" id="projects">
             <div class="container">
                 <p class="section-kicker">Karya yang saya bangun</p>
                 <div class="project-header">
-                    <h1>Projects</h1>
+                    <h1 class="page-title">Projects</h1>
                     <a href="{% url 'main:create_project' %}"
                        class="button project-add-button">
                         <span aria-hidden="true">+</span>
                         Tambah Proyek
                     </a>
                 </div>
-                <form method="get"
-                      action="{% url 'main:show_projects' %}"
-                      class="project-search">
-                    <input type="search"
-                           name="title"
-                           value="{{ title_query }}"
-                           placeholder="Cari berdasarkan nama proyek"
-                           class="project-search__input"
-                           aria-label="Cari berdasarkan nama proyek">
-                    <button type="submit" class="button">Cari</button>
-                </form>
-                <div class="experience-grid project-grid">
+
+                <div class="project-search-wrapper">
+                    <form method="get" action="{% url 'main:show_projects' %}" class="project-search" role="search">
+                        <div class="project-search__input-wrapper">
+                            <input type="search"
+                                   name="title"
+                                   value="{{ title_query }}"
+                                   placeholder="Cari berdasarkan nama proyek..."
+                                   class="project-search__input"
+                                   aria-label="Cari berdasarkan nama proyek">
+                        </div>
+                        <button type="submit" class="button button-primary project-search__btn">Cari</button>
+                        {% if title_query %}
+                            <a href="{% url 'main:show_projects' %}"
+                               class="button button-secondary project-search__clear">✕ Reset</a>
+                        {% endif %}
+                    </form>
+
+                    {% if title_query %}
+                        <div class="project-search-status">
+                            <span>Hasil pencarian untuk: <strong>"{{ title_query }}"</strong></span>
+                            <span>{{ project_list|length }} proyek ditemukan</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="project-grid">
                     {% for project in project_list %}
-                        <article class="experience-card">
-                            {% if project.project_image_url %}
-                                <img src="{{ project.project_image_url }}"
-                                     alt="Gambar {{ project.title }}"
-                                     class="project-image">
-                            {% endif %}
+                        <article class="project-card">
+                            <div class="card-top-row">
+                                <span class="project-badge">ITEM #{{ forloop.counter }}</span>
+                            </div>
+
+                            <div class="project-image-frame">
+                                {% if project.thumbnail %}
+                                    <img src="{{ project.thumbnail }}" class="project-image">
+                                {% else %}
+                                    <div class="project-image-fallback">
+                                        <span class="project-fallback-icon">&lt;/&gt;</span>
+                                        <span class="project-fallback-text">{{ project.title }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
                             <h2>{{ project.title }}</h2>
-                            <span class="experience-category">{{ project.tech_stack }}</span>
-                            <p class="experience-description">{{ project.description }}</p>
+
+                            {% if project.tech_stack %}
+                                <div class="project-tag-list">
+                                    <span class="project-tag">{{ project.tech_stack }}</span>
+                                </div>
+                            {% endif %}
+
+                            <p class="project-description">{{ project.description }}</p>
+
                             <div class="project-card-actions">
                                 <div class="project-actions">
-                                    {% if project.project_url %}
-                                        <a href="{{ project.project_url }}" class="button">Lihat Project</a>
+                                    {% if project.link %}
+                                        <a href="{{ project.link }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="button button-primary">
+                                            {% if "github" in project.link|lower %}
+                                                <img src="/static/img/github.svg" class="project-btn-icon" style="width: 1.1rem; height: 1.1rem; filter: brightness(0) invert(1);">
+                                            {% else %}
+                                                <span aria-hidden="true">↗</span>
+                                            {% endif %}
+                                            Lihat Project
+                                        </a>
                                     {% endif %}
                                     {% include "components/project_delete_modal.html" with project=project %}
                                 </div>
                             </div>
                         </article>
                     {% empty %}
-                        {% if title_query %}
-                            <p class="empty-state">Tidak ada proyek dengan nama tersebut.</p>
-                        {% else %}
-                            <p class="empty-state">Belum ada proyek yang ditambahkan.</p>
-                        {% endif %}
+                        <div class="empty-state-box">
+                            {% if title_query %}
+                                <p class="empty-state">Tidak ada proyek dengan nama "{{ title_query }}".</p>
+                                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-muted);">
+                                    Coba periksa ejaan atau gunakan kata kunci lain.
+                                </p>
+                                <div style="margin-top: 1.25rem;">
+                                    <a href="{% url 'main:show_projects' %}" class="button button-secondary">
+                                        Tampilkan Semua Proyek
+                                    </a>
+                                </div>
+                            {% else %}
+                                <p class="empty-state">Belum ada proyek yang ditambahkan.</p>
+                                <div style="margin-top: 1.25rem;">
+                                    <a href="{% url 'main:create_project' %}" class="button button-primary">
+                                        Tambah Proyek
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 </div>
             </div>

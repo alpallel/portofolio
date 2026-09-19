@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ short_name }} - Portfolio</title>
+    <title>{% block title %}{{ short_name }} - Portfolio{% endblock title %}</title>
+    {% block meta %}{% endblock meta %}
     <link rel="icon" type="image/x-icon" href="/static/img/kirara.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +30,17 @@
             </nav>
         </div>
     </header>
+
+    {% if messages %}
+        <div class="container messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }}">
+                    <span class="alert-text">{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     {% block content %} {% endblock content %}
 
     <footer class="site-footer">
