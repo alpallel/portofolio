@@ -24,6 +24,7 @@ class MainTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "index.html")
         self.assertNotContains(response, self.experience.title)
+        self.assertContains(response, self.experience.title)
         self.assertContains(response, f'href="{reverse("main:show_experience")}"')
 
     def test_nonexistent_page_returns_404(self):
@@ -77,3 +78,40 @@ class MainTest(TestCase):
         response = self.client.get(reverse("main:show_projects"))
 
         self.assertContains(response, "No project has been added yet")
+
+    def test_create_project_page_renders_form(self):
+        response = self.client.get(reverse("main:create_project"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "projects_form.html")
+        self.assertContains(response, "Tambah Proyek Baru")
+        self.assertContains(response, "Crafting Table")
+
+    def test_create_project_post_success(self):
+        data = {
+            "title": "Pixel Adventure",
+            "description": "A 2D retro RPG game made with Python.",
+            "tech_stack": "Python, Pygame",
+            "thumbnail": "https://example.com/pixel.png",
+            "link": "https://github.com/alpallel/pixel-adventure",
+        }
+        response = self.client.post(reverse("main:create_project"), data, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "projects.html")
+        self.assertTrue(Project.objects.filter(title="Pixel Adventure").exists())
+        self.assertContains(response, "Pixel Adventure")
+        self.assertContains(response, "Proyek baru berhasil ditambahkan!")
+
+    def test_project_search_filter(self):
+        Project.objects.create(
+            title="Minecraft Clone",
+            description="Voxel based game engine",
+            tech_stack="C++, OpenGL",
+            link="https://github.com/alpallel/voxel",
+        )
+        response = self.client.get(reverse("main:show_projects") + "?title=Minecraft")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Minecraft Clone")
+        self.assertNotContains(response, "cool project")

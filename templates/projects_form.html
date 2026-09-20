@@ -1,28 +1,79 @@
 {% extends "base.html" %}
+
 {% block meta %}
     <title>Add Project - {{ name }}</title>
 {% endblock meta %}
+
+{% block title %}Add Project - {{ name }}{% endblock title %}
+
 {% block content %}
     <main>
-        <section class="experience-section">
+        <section class="project-form-section">
             <div class="container">
-                <h1>Add New Projects</h1>
-                <form method="post"
-                      action="{% url 'main:create_project' %}"
-                      class="project-form">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-group">
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                            {% for error in field.errors %}
-                                <p class="form-error">{{ error }}</p>
-                            {% endfor %}
+                <div class="form-card">
+                    <div class="form-header">
+                        <h1 class="page-title">Tambah Proyek Baru</h1>
+                        <p class="form-subtitle">Lengkapi detail proyek di bawah ini untuk menambahkannya ke portofolio.</p>
+                    </div>
+
+                    <form method="post"
+                          action="{% url 'main:create_project' %}"
+                          class="project-form"
+                          id="project-form"
+                          novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-error" role="alert">
+                                <span class="alert-icon">⚠</span>
+                                <div>
+                                    {% for error in form.non_field_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}" class="label">
+                                    <span class="label-bullet" aria-hidden="true">▸</span>
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="required-star" title="Wajib diisi">*</span>
+                                    {% endif %}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.name == "tech_stack" %}
+                                    <small class="form-hint">Pisahkan dengan koma (contoh: Django, Python, PostgreSQL, HTML5, CSS3)</small>
+                                {% elif field.name == "thumbnail" %}
+                                    <small class="form-hint">Tautan URL gambar langsung (.jpg, .png, atau tautan Google Drive / Imgur)</small>
+                                {% elif field.name == "link" %}
+                                    <small class="form-hint">Tautan repositori GitHub atau URL website yang dapat dikunjungi</small>
+                                {% elif field.name == "description" %}
+                                    <small class="form-hint">Jelaskan fitur utama, teknologi, dan tantangan menarik dari proyek ini</small>
+                                {% endif %}
+
+                                {% for error in field.errors %}
+                                    <p class="field-error">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="form-actions">
+                            <button type="submit" class="button button-success">
+                                Simpan Proyek
+                            </button>
+                            <a href="{% url 'main:show_projects' %}" class="button button-secondary">
+                                Batal
+                            </a>
                         </div>
-                    {% endfor %}
-                    <button type="submit" class="button">Tambah Project</button>
-                    <a href="{% url 'main:show_projects' %}" class="button button-secondary">Batal</a>
-                </form>
+                    </form>
+                </div>
             </div>
         </section>
     </main>

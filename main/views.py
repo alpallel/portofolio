@@ -45,7 +45,7 @@ def show_projects(request):
     context = {
         "name": "Alfarrel Ersya Balawa",
         "short_name": "Alfarrel",
-        "project_list": Project.objects.all(),
+        "project_list": projects,
         "title_query": title_query,
     }
     return render(request, "projects.html", context)
