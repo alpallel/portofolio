@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block meta %}
-    <title>Add Experience - {{ name }}</title>
+    <title>{% if experience %}Edit Experience{% else %}Add Experience{% endif %} - {{ name }}</title>
 {% endblock meta %}
 
-{% block title %}Add Experience - {{ name }}{% endblock title %}
+{% block title %}{% if experience %}Edit Experience{% else %}Add Experience{% endif %} - {{ name }}{% endblock title %}
 
 {% block content %}
     <main>
@@ -12,12 +12,12 @@
             <div class="container">
                 <div class="form-card">
                     <div class="form-header">
-                        <h1 class="page-title">Tambah Pengalaman Baru</h1>
-                        <p class="form-subtitle">Lengkapi detail pengalaman di bawah ini untuk menambahkannya ke portofolio.</p>
+                        <h1 class="page-title">{% if experience %}Edit Pengalaman{% else %}Tambah Pengalaman Baru{% endif %}</h1>
+                        <p class="form-subtitle">{% if experience %}Ubah detail pengalaman di bawah ini untuk memperbarui portofolio.{% else %}Lengkapi detail pengalaman di bawah ini untuk menambahkannya ke portofolio.{% endif %}</p>
                     </div>
 
                     <form method="post"
-                          action="{% url 'main:create_experience' %}"
+                          action="{% if experience %}{% url 'main:edit_experience' experience.id %}{% else %}{% url 'main:create_experience' %}{% endif %}"
                           class="experience-form"
                           id="experience-form"
                           novalidate>
