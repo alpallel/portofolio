@@ -1,6 +1,6 @@
-from django.forms import ModelForm, TextInput, Textarea, URLInput
+from django.forms import ModelForm, TextInput, Textarea, URLInput, Select
 
-from main.models import Project
+from main.models import Project, Experience
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -47,6 +47,72 @@ class ProjectForm(ModelForm):
             "link": URLInput(
                 attrs={
                     "placeholder": "https://github.com/alpallel/projectorsomething",
+                }
+            ),
+        }
+
+class ExperienceForm(ModelForm):
+    class Meta:
+        model = Experience
+        fields = [
+            "title",
+            "description",
+            "category",
+            "thumbnail",
+            "organization",
+            "started_at",
+            "ended_at",
+        ]
+
+        labels = {
+            "title": "Nama Pengalaman",
+            "description": "Deskripsi Pengalaman",
+            "category": "Kategori Pengalaman",
+            "thumbnail": "URL Gambar Pengalaman",
+            "organization": "Organisasi Pengalaman",
+            "started_at": "Tanggal Mulai",
+            "ended_at": "Tanggal Berakhir (kosongkan jika masih berlanjut)",
+        }
+
+        widgets = {
+            "title": TextInput(
+                attrs={
+                    "placeholder": "Staff of ...",
+                    "maxlength": 255,
+                }
+            ),
+            "description": Textarea(
+                attrs={
+                    "placeholder": "Ceritakan Pengalamanmu",
+                    "rows": 3,
+                }
+            ),
+            "category": Select(
+                attrs={
+                    
+                }
+            ),
+            "thumbnail": URLInput(
+                attrs={
+                    "placeholder": "https://drive.google.com/thumbnail?id=...&sz=w1000",
+                }
+            ),
+            "organization": TextInput(
+                attrs={
+                    "placeholder": "COMPFEST",
+                    "maxlength": 255,
+                }
+            ),
+            "started_at_string": TextInput(
+                attrs={
+                    "placeholder": "Apr 2026",
+                    "maxlength": 255,
+                }
+            ),
+            "ended_at_string": TextInput(
+                attrs={
+                    "placeholder": "Sep 2026",
+                    "maxlength": 255,
                 }
             ),
         }
