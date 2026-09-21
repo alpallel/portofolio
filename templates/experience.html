@@ -1,30 +1,62 @@
 {% extends 'base.html' %}
+
+{% block title %}Experience - {{ name }}{% endblock title %}
+
 {% block content %}
     <main>
         <section class="experience-section" id="experience">
             <div class="container">
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
-                <h1 class="page-title">Experience</h1>
+                <div class="experience-header-row">
+                    <h1 class="page-title">Experience</h1>
+                </div>
 
                 <div class="experience-grid">
                     {% for experience in experience_list %}
                         <article class="experience-card">
                             <div class="card-top-row">
-                                <span class="experience-category">
-                                    {{ experience.get_category_display }}
-                                </span>
                                 {% if experience.is_ongoing %}
-                                    <span class="experience-status status-ongoing">Sedang Berlangsung</span>
+                                <span class="experience-status status-ongoing">Sedang berlangsung</span>
                                 {% else %}
-                                    <span class="experience-status status-completed">Selesai</span>
+                                <span class="experience-status status-completed">Selesai</span>
                                 {% endif %}
                             </div>
-
-                            <h2>{{ experience.title }}</h2>
                             
-                            <p class="experience-description">
-                                {{ experience.description }}
-                            </p>
+                            {% if experience.thumbnail %}
+                                <div class="experience-image-frame">
+                                    <img src="{{ experience.thumbnail }}"
+                                    alt="{{ experience.title }}"
+                                    class="experience-image"
+                                    loading="lazy">
+                                </div>
+                                {% endif %}
+                                
+                                <div class="experience-card-body">
+                                    <h2>{{ experience.title }}</h2>
+                                    
+                                    <div class="badge-cluster">
+                                        {% if experience.organization %}
+                                        <p class="experience-organization">{{ experience.organization }}</p>
+                                        {% endif %}
+                                        <span class="experience-category">
+                                            {{ experience.get_category_display }}
+                                        </span>
+                                    </div>
+                                    
+                                    {% if experience.started_at_string or experience.ended_at_string %}
+                                    <div class="experience-timeline">
+                                        <span class="timeline-label">WAKTU:</span>
+                                        <span class="timeline-value">
+                                            {{ experience.started_at_string|default:"-" }} - {% if experience.is_ongoing %}Present{% else %}{{ experience.ended_at_string|default:"Selesai" }}{% endif %}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                                
+                                <p class="experience-description">
+                                    {{ experience.description }}
+                                </p>
+                                
+                            </div>
                         </article>
                     {% empty %}
                         <div class="empty-state-box">
