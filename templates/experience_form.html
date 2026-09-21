@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block meta %}
+    <title>Add Experience - {{ name }}</title>
+{% endblock meta %}
+
+{% block title %}Add Experience - {{ name }}{% endblock title %}
+
+{% block content %}
+    <main>
+        <section class="experience-form-section">
+            <div class="container">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h1 class="page-title">Tambah Pengalaman Baru</h1>
+                        <p class="form-subtitle">Lengkapi detail pengalaman di bawah ini untuk menambahkannya ke portofolio.</p>
+                    </div>
+
+                    <form method="post"
+                          action="{% url 'main:create_experience' %}"
+                          class="experience-form"
+                          id="experience-form"
+                          novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-error" role="alert">
+                                <span class="alert-icon">[!]</span>
+                                <div>
+                                    {% for error in form.non_field_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}" class="label">
+                                    <span class="label-bullet" aria-hidden="true">▸</span>
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="required-star" title="Wajib diisi">*</span>
+                                    {% endif %}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.name == "thumbnail" %}
+                                    <small class="form-hint">Tautan URL gambar langsung (.jpg, .png, atau tautan Google Drive / Imgur)</small>
+                                {% elif field.name == "description" %}
+                                    <small class="form-hint">Ceritakan tugas, peran, atau pencapaian menarik selama pengalaman ini</small>
+                                {% elif field.name == "started_at_string" %}
+                                    <small class="form-hint">Contoh: Apr 2026 atau Januari 2026</small>
+                                {% elif field.name == "ended_at_string" %}
+                                    <small class="form-hint">Contoh: Sep 2026 (kosongkan jika masih berlangsung)</small>
+                                {% endif %}
+
+                                {% for error in field.errors %}
+                                    <p class="field-error">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="form-actions">
+                            <button type="submit" class="button button-success">
+                                Simpan Pengalaman
+                            </button>
+                            <a href="{% url 'main:show_experience' %}" class="button button-secondary">
+                                Batal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

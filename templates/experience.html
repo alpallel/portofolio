@@ -9,6 +9,11 @@
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
                 <div class="experience-header-row">
                     <h1 class="page-title">Experience</h1>
+                    <a href="{% url 'main:create_experience' %}"
+                       class="button project-add-button">
+                        <span aria-hidden="true">+</span>
+                        Tambah Pengalaman
+                    </a>
                 </div>
 
                 <div class="experience-grid">
@@ -55,7 +60,12 @@
                                 <p class="experience-description">
                                     {{ experience.description }}
                                 </p>
-                                
+
+                                <div class="experience-card-actions">
+                                    <div class="experience-actions">
+                                        {% include "components/experience_delete_modal.html" with experience=experience %}
+                                    </div>
+                                </div>
                             </div>
                         </article>
                     {% empty %}

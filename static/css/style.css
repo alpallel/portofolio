@@ -1507,6 +1507,50 @@ h1, h2, h3, .brand {
     background: #b42318;
 }
 
+/* Experience Form Page */
+.experience-form-section {
+    padding: 3rem 0 5rem;
+}
+
+.experience-form {
+    width: 100%;
+    margin-top: 0;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font-family: var(--font-pixel-body);
+    font-size: 1.15rem;
+    background: #ffffff;
+    border: 3px solid var(--border-dark);
+    box-shadow: inset 2px 2px 0 0 rgba(0, 0, 0, 0.08);
+    color: var(--text-main);
+    border-radius: 0;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-dark);
+    box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.08), 0 0 0 2px var(--diamond-blue);
+}
+
+.experience-card-actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 2px dashed #c0d8ea;
+}
+
+.experience-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
 @media (max-width: 600px) {
     .project-header {
         align-items: flex-start;
@@ -1529,11 +1573,13 @@ h1, h2, h3, .brand {
         justify-content: center;
     }
 
-    .project-actions {
+    .project-actions,
+    .experience-actions {
         width: 100%;
     }
 
-    .project-actions .button {
+    .project-actions .button,
+    .experience-actions .button {
         width: 100%;
         text-align: center;
     }

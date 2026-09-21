@@ -60,8 +60,8 @@ class ExperienceForm(ModelForm):
             "category",
             "thumbnail",
             "organization",
-            "started_at",
-            "ended_at",
+            "started_at_string",
+            "ended_at_string",
         ]
 
         labels = {
@@ -70,8 +70,8 @@ class ExperienceForm(ModelForm):
             "category": "Kategori Pengalaman",
             "thumbnail": "URL Gambar Pengalaman",
             "organization": "Organisasi Pengalaman",
-            "started_at": "Tanggal Mulai",
-            "ended_at": "Tanggal Berakhir (kosongkan jika masih berlanjut)",
+            "started_at_string": "Tanggal Mulai",
+            "ended_at_string": "Tanggal Berakhir (kosongkan jika masih berlanjut)",
         }
 
         widgets = {
@@ -106,13 +106,13 @@ class ExperienceForm(ModelForm):
             "started_at_string": TextInput(
                 attrs={
                     "placeholder": "Apr 2026",
-                    "maxlength": 255,
+                    "maxlength": 20,
                 }
             ),
             "ended_at_string": TextInput(
                 attrs={
                     "placeholder": "Sep 2026",
-                    "maxlength": 255,
+                    "maxlength": 20,
                 }
             ),
         }

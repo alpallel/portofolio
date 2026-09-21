@@ -26,7 +26,11 @@ class Experience(models.Model):
     
     @property
     def is_ongoing(self):
-        return self.ended_at is None
+        if self.ended_at is not None:
+            return False
+        if not self.ended_at_string or not self.ended_at_string.strip():
+            return True
+        return self.ended_at_string.strip().lower() in ["present", "sekarang", "saat ini"]
 
 class Project(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
