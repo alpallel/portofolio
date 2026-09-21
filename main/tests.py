@@ -23,7 +23,6 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "index.html")
-        self.assertNotContains(response, self.experience.title)
         self.assertContains(response, self.experience.title)
         self.assertContains(response, f'href="{reverse("main:show_experience")}"')
 
@@ -63,6 +62,103 @@ class MainTest(TestCase):
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
 
+    def test_create_experience_page_renders_form(self):
+        response = self.client.get(reverse("main:create_experience"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "experience_form.html")
+        self.assertContains(response, "Tambah Pengalaman Baru")
+        self.assertContains(response, "Nama Pengalaman")
+
+    def test_create_experience_post_success(self):
+        data = {
+            "title": "Software Engineering Intern",
+            "description": "anjay masuk gugel",
+            "category": "internship",
+            "organization": "Google",
+            "thumbnail": "https://example.com/logo.png",
+            "started_at_string": "Apr 2026",
+            "ended_at_string": "Sep 2026",
+        }
+        response = self.client.post(reverse("main:create_experience"), data, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "experience.html")
+        self.assertTrue(Experience.objects.filter(title="Software Engineering Intern").exists())
+        self.assertContains(response, "Software Engineering Intern")
+        self.assertContains(response, "Pengalaman baru berhasil ditambahkan!")
+
+    def test_experience_search_filter(self):
+        Experience.objects.create(
+            title="atmin fesnuk",
+            description="6767",
+            category="part-time",
+        )
+        response = self.client.get(reverse("main:show_experience") + "?title=atmin")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "atmin fesnuk")
+        self.assertNotContains(response, "bukan atmin fesnuk")
+
+    def test_experience_page_renders_delete_button(self):
+        response = self.client.get(reverse("main:show_experience"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Hapus Pengalaman")
+        self.assertContains(response, reverse("main:delete_experience", args=[self.experience.id]))
+
+    def test_delete_experience_post_success(self):
+        response = self.client.post(
+            reverse("main:delete_experience", args=[self.experience.id]),
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "experience.html")
+        self.assertFalse(Experience.objects.filter(id=self.experience.id).exists())
+        self.assertContains(response, "Pengalaman berhasil dihapus!")
+
+    def test_experience_page_renders_edit_button(self):
+        response = self.client.get(reverse("main:show_experience"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Edit Pengalaman")
+        self.assertContains(response, reverse("main:edit_experience", args=[self.experience.id]))
+
+    def test_edit_experience_page_renders_form_with_instance(self):
+        response = self.client.get(reverse("main:edit_experience", args=[self.experience.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "experience_form.html")
+        self.assertContains(response, "Edit Pengalaman")
+        self.assertContains(response, self.experience.title)
+        self.assertContains(response, self.experience.description)
+
+    def test_edit_experience_post_success(self):
+        data = {
+            "title": "CEO",
+            "description": "aku si i o",
+            "category": "full-time",
+            "organization": "SPPG sebelah preksu",
+            "thumbnail": "https://example.com/ta.png",
+            "started_at_string": "Jan 2026",
+            "ended_at_string": "Jun 2026",
+        }
+        response = self.client.post(
+            reverse("main:edit_experience", args=[self.experience.id]),
+            data,
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "experience.html")
+        self.experience.refresh_from_db()
+        self.assertEqual(self.experience.title, "CEO")
+        self.assertEqual(self.experience.organization, "SPPG sebelah preksu")
+        self.assertFalse(self.experience.is_ongoing)
+        self.assertContains(response, "CEO")
+        self.assertContains(response, "Pengalaman berhasil diperbarui!")
+
     def test_projects_page(self):
         response = self.client.get(reverse("main:show_projects"))
 
@@ -73,11 +169,11 @@ class MainTest(TestCase):
         self.assertContains(response, self.projects.link)
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
 
-    def test_empty_experience_page(self):
+    def test_empty_project_page(self):
         Project.objects.all().delete()
         response = self.client.get(reverse("main:show_projects"))
 
-        self.assertContains(response, "No project has been added yet")
+        self.assertContains(response, "Belum ada proyek yang ditambahkan.")
 
     def test_create_project_page_renders_form(self):
         response = self.client.get(reverse("main:create_project"))
@@ -85,7 +181,7 @@ class MainTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "projects_form.html")
         self.assertContains(response, "Tambah Proyek Baru")
-        self.assertContains(response, "Crafting Table")
+        self.assertContains(response, "Nama Proyek")
 
     def test_create_project_post_success(self):
         data = {
