@@ -8,6 +8,22 @@ from main.models import Experience, Project
 
 class MainTest(TestCase):
     def setUp(self):
+        self.superuser = User.objects.create_superuser(
+            username="admin_user",
+            email="admin@example.com",
+            password="password123",
+        )
+        self.regular_user = User.objects.create_user(
+            username="regular_user",
+            password="password123",
+        )
+        self.editor_user = User.objects.create_user(
+            username="editor_user",
+            password="password123",
+        )
+        self.editor_group = Group.objects.create(name="Editor")
+        self.editor_user.groups.add(self.editor_group)
+
         self.experience = Experience.objects.create(
             title="Asisten Dosen PBP",
             description="Membantu mahasiswa memahami pengembangan web.",
@@ -166,6 +182,54 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "CEO")
         self.assertContains(response, "Pengalaman berhasil diperbarui!")
+
+    def test_experience_authorization_roles(self):
+        self.assertEqual(self.client.get(reverse("main:create_experience")).status_code, 302)
+        self.assertEqual(
+            self.client.get(reverse("main:edit_experience", args=[self.experience.id])).status_code,
+            302,
+        )
+        self.assertEqual(
+            self.client.post(reverse("main:delete_experience", args=[self.experience.id])).status_code,
+            302,
+        )
+
+        self.client.force_login(self.regular_user)
+        self.assertEqual(self.client.get(reverse("main:create_experience")).status_code, 403)
+        self.assertEqual(
+            self.client.get(reverse("main:edit_experience", args=[self.experience.id])).status_code,
+            403,
+        )
+        self.assertEqual(
+            self.client.post(reverse("main:delete_experience", args=[self.experience.id])).status_code,
+            403,
+        )
+
+        self.client.force_login(self.editor_user)
+        self.assertEqual(self.client.get(reverse("main:create_experience")).status_code, 403)
+        self.assertEqual(
+            self.client.get(reverse("main:edit_experience", args=[self.experience.id])).status_code,
+            200,
+        )
+        self.assertEqual(
+            self.client.post(reverse("main:delete_experience", args=[self.experience.id])).status_code,
+            403,
+        )
+
+    def test_toggle_experience_like(self):
+        like_url = reverse("main:toggle_like", args=[self.experience.id])
+
+        guest_response = self.client.post(like_url)
+        self.assertEqual(guest_response.status_code, 302)
+
+        self.client.force_login(self.regular_user)
+        self.client.post(like_url)
+        self.assertIn(self.regular_user, self.experience.liked_by.all())
+        self.assertEqual(self.experience.liked_by.count(), 1)
+
+        self.client.post(like_url)
+        self.assertNotIn(self.regular_user, self.experience.liked_by.all())
+        self.assertEqual(self.experience.liked_by.count(), 0)
 
     def test_projects_page(self):
         response = self.client.get(reverse("main:show_projects"))
