@@ -66,12 +66,7 @@
                                 <div class="experience-card-actions">
                                     <div class="experience-actions">
                                         {% include "components/experience_like.html" with experience=experience %}
-                                        {% if user.is_superuser %}
-                                            <a href="{% url 'main:edit_experience' experience.id %}"
-                                            class="button button-primary">
-                                                Edit Pengalaman
-                                            </a>
-                                        {% endif %}
+                                        {% include "components/experience_edit.html" with experience=experience %}
                                         {% include "components/experience_delete_modal.html" with experience=experience %}
                                     </div>
                                 </div>
