@@ -9,11 +9,13 @@
                 <p class="section-kicker">Karya yang saya bangun</p>
                 <div class="project-header">
                     <h1 class="page-title">Projects</h1>
-                    <a href="{% url 'main:create_project' %}"
-                       class="button project-add-button">
-                        <span aria-hidden="true">+</span>
-                        Tambah Proyek
-                    </a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'main:create_project' %}"
+                        class="button project-add-button">
+                            <span aria-hidden="true">+</span>
+                            Tambah Proyek
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="project-search-wrapper">
@@ -84,6 +86,7 @@
                                             Lihat Project
                                         </a>
                                     {% endif %}
+                                    {% include "components/project_star.html" with project=project %}
                                     {% include "components/project_delete_modal.html" with project=project %}
                                 </div>
                             </div>
