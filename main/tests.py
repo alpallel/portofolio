@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -13,10 +14,10 @@ class MainTest(TestCase):
             category="part-time",
         )
         self.projects = Project.objects.create(
-                    title="cool project",
-                    description="very kul",
-                    link="https://github.com/alpallel/portofolio"
-                )
+            title="cool project",
+            description="very kul",
+            link="https://github.com/alpallel/portofolio",
+        )
 
     def test_main_url_is_accessible(self):
         response = self.client.get(reverse("main:show_main"))
@@ -63,6 +64,7 @@ class MainTest(TestCase):
         self.assertNotContains(response, "Sedang berlangsung")
 
     def test_create_experience_page_renders_form(self):
+        self.client.force_login(self.superuser)
         response = self.client.get(reverse("main:create_experience"))
 
         self.assertEqual(response.status_code, 200)
@@ -71,6 +73,7 @@ class MainTest(TestCase):
         self.assertContains(response, "Nama Pengalaman")
 
     def test_create_experience_post_success(self):
+        self.client.force_login(self.superuser)
         data = {
             "title": "Software Engineering Intern",
             "description": "anjay masuk gugel",
@@ -101,6 +104,7 @@ class MainTest(TestCase):
         self.assertNotContains(response, "bukan atmin fesnuk")
 
     def test_experience_page_renders_delete_button(self):
+        self.client.force_login(self.superuser)
         response = self.client.get(reverse("main:show_experience"))
 
         self.assertEqual(response.status_code, 200)
@@ -108,6 +112,7 @@ class MainTest(TestCase):
         self.assertContains(response, reverse("main:delete_experience", args=[self.experience.id]))
 
     def test_delete_experience_post_success(self):
+        self.client.force_login(self.superuser)
         response = self.client.post(
             reverse("main:delete_experience", args=[self.experience.id]),
             follow=True,
@@ -119,6 +124,7 @@ class MainTest(TestCase):
         self.assertContains(response, "Pengalaman berhasil dihapus!")
 
     def test_experience_page_renders_edit_button(self):
+        self.client.force_login(self.superuser)
         response = self.client.get(reverse("main:show_experience"))
 
         self.assertEqual(response.status_code, 200)
@@ -126,6 +132,7 @@ class MainTest(TestCase):
         self.assertContains(response, reverse("main:edit_experience", args=[self.experience.id]))
 
     def test_edit_experience_page_renders_form_with_instance(self):
+        self.client.force_login(self.superuser)
         response = self.client.get(reverse("main:edit_experience", args=[self.experience.id]))
 
         self.assertEqual(response.status_code, 200)
@@ -135,6 +142,7 @@ class MainTest(TestCase):
         self.assertContains(response, self.experience.description)
 
     def test_edit_experience_post_success(self):
+        self.client.force_login(self.superuser)
         data = {
             "title": "CEO",
             "description": "aku si i o",
@@ -176,6 +184,7 @@ class MainTest(TestCase):
         self.assertContains(response, "Belum ada proyek yang ditambahkan.")
 
     def test_create_project_page_renders_form(self):
+        self.client.force_login(self.superuser)
         response = self.client.get(reverse("main:create_project"))
 
         self.assertEqual(response.status_code, 200)
@@ -184,6 +193,7 @@ class MainTest(TestCase):
         self.assertContains(response, "Nama Proyek")
 
     def test_create_project_post_success(self):
+        self.client.force_login(self.superuser)
         data = {
             "title": "Pixel Adventure",
             "description": "A 2D retro RPG game made with Python.",
