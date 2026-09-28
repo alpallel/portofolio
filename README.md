@@ -77,5 +77,7 @@ Deployed at: https://alfarrel-ersya-myportofolio.pws.cs.ui.ac.id/
 ## AI Disclosure
 Saya memakai Gemini AI untuk membantu saya mewujudkan ide, tema, dan debbugging, terutama untuk styling css. Hasil dari AI kemudian saya improve dan saya terapkan sebagai referensi untuk styling elemen-elemen lainnya. Sebagian besar AI digunakan pada section 'about me' untuk saya belajar styling dengan css. Sisanya AI  digunakan untuk debugging kecil ketika saya stuck.
 
+AI juga digunakan untuk membatu membuat testing dan refactor kode redundan di style.css
+
 
 ### Terdapat comment pada bagian yang dibantu oleh AI di file style.css
