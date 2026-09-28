@@ -1556,10 +1556,10 @@ h1, h2, h3, .brand {
 }
 
 .button-star {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: var(--ink);
+    background: #3b9ed8;
+    color: #ffffff;
+    border-color: #8ed0f8 #1a6491 #1a6491 #8ed0f8;
+    text-shadow: 1px 1px 0 #182836;
 }
 
 .button-star.is-starred {

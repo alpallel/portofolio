@@ -13,7 +13,7 @@ from main.forms import ProjectForm, ExperienceForm
 
 
 def show_main(request):
-    last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
+    last_login = request.COOKIES.get('last_login', '-')
     context = {
         "name": "Alfarrel Ersya Balawa",
         "short_name": "Alfarrel",
