@@ -9,11 +9,13 @@
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
                 <div class="experience-header-row">
                     <h1 class="page-title">Experience</h1>
-                    <a href="{% url 'main:create_experience' %}"
-                       class="button project-add-button">
-                        <span aria-hidden="true">+</span>
-                        Tambah Pengalaman
-                    </a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'main:create_experience' %}"
+                        class="button project-add-button">
+                            <span aria-hidden="true">+</span>
+                            Tambah Pengalaman
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="experience-grid">
@@ -63,10 +65,12 @@
 
                                 <div class="experience-card-actions">
                                     <div class="experience-actions">
-                                        <a href="{% url 'main:edit_experience' experience.id %}"
-                                           class="button button-primary">
-                                            Edit Pengalaman
-                                        </a>
+                                        {% if user.is_superuser %}
+                                            <a href="{% url 'main:edit_experience' experience.id %}"
+                                            class="button button-primary">
+                                                Edit Pengalaman
+                                            </a>
+                                        {% endif %}
                                         {% include "components/experience_delete_modal.html" with experience=experience %}
                                     </div>
                                 </div>

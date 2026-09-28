@@ -1,10 +1,12 @@
-<button type="button"
-        class="button button-danger"
-        popovertarget="delete-experience-{{ experience.id }}"
-        aria-label="Hapus {{ experience.title }}"
-        title="Hapus pengalaman">
-    Hapus Pengalaman
-</button>
+{% if user.is_superuser %}
+    <button type="button"
+            class="button button-danger"
+            popovertarget="delete-experience-{{ experience.id }}"
+            aria-label="Hapus {{ experience.title }}"
+            title="Hapus pengalaman">
+        Hapus Pengalaman
+    </button>
+{% endif %}
 <div id="delete-experience-{{ experience.id }}"
      class="project-delete-modal"
      popover="auto"
