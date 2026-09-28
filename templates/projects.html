@@ -46,9 +46,6 @@
                 <div class="project-grid">
                     {% for project in project_list %}
                         <article class="project-card">
-                            <div class="card-top-row">
-                                <span class="project-badge">ITEM #{{ forloop.counter }}</span>
-                            </div>
 
                             <div class="project-image-frame">
                                 {% if project.thumbnail %}
@@ -105,11 +102,13 @@
                                 </div>
                             {% else %}
                                 <p class="empty-state">Belum ada proyek yang ditambahkan.</p>
-                                <div style="margin-top: 1.25rem;">
-                                    <a href="{% url 'main:create_project' %}" class="button button-primary">
-                                        Tambah Proyek
-                                    </a>
-                                </div>
+                                {% if user.is_superuser %}
+                                    <div style="margin-top: 1.25rem;">
+                                        <a href="{% url 'main:create_project' %}" class="button button-primary">
+                                            Tambah Proyek
+                                        </a>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     {% endfor %}
