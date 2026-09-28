@@ -22,6 +22,8 @@ class Experience(models.Model):
     organization = models.CharField(max_length=255, blank=True, null=True)
     started_at_string = models.CharField(max_length=20, blank=True, null=True)
     ended_at_string = models.CharField(max_length=20, blank=True, null=True)
+    liked_by = models.ManyToManyField(User, related_name="liked_experiences", blank=True)
+
     def __str__(self):
         return self.title
     

@@ -228,3 +228,15 @@ def toggle_star(request, project_id):
             project.starred_by.add(request.user)
 
     return redirect("main:show_projects")
+
+@login_required(login_url="/login/")
+def toggle_like(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+
+    if request.method == "POST":
+        if request.user in experience.liked_by.all():
+            experience.liked_by.remove(request.user)
+        else:
+            experience.liked_by.add(request.user)
+
+    return redirect("main:show_experience")
