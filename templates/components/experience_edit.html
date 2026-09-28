@@ -1,4 +1,4 @@
-{% if user.is_superuser %}
+{% if user.is_superuser or is_editor %}
     <a href="{% url 'main:edit_experience' experience.id %}"
        class="button button-primary">
         Edit Pengalaman

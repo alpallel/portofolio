@@ -31,6 +31,13 @@ def show_main(request):
     return render(request, "index.html", context)
 
 
+def is_editor(user):
+    return user.is_authenticated and (
+        user.groups.filter(name="Editor").exists()      # AI digunakan untuk mencari solusi Django group filtering
+        or user.has_perm("main.change_experience")      # AI menyarankan untuk menambah line ini
+    )
+
+
 def show_experience(request):
     json_response = get_experiences_json(request)
 
@@ -46,6 +53,7 @@ def show_experience(request):
         "short_name": "Alfarrel",
         "experience_list": experiences,
         "title_query": title_query,
+        "is_editor": is_editor(request.user),
     }
     return render(request, "experience.html", context)
 
@@ -72,7 +80,7 @@ def create_experience(request):
 @login_required(login_url="/login/")
 def edit_experience(request, experience_id):
 
-    if not request.user.is_superuser:
+    if not (request.user.is_superuser or is_editor(request.user)):
         raise PermissionDenied
     
     experience = get_object_or_404(Experience, pk=experience_id)
