@@ -131,6 +131,7 @@ def show_projects(request):
         "name": "Alfarrel Ersya Balawa",
         "short_name": "Alfarrel",
         "title_query": title_query,
+        "form": ProjectForm(),
     }
     return render(request, "projects.html", context)
 
