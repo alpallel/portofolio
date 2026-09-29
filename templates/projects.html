@@ -31,32 +31,33 @@
                         <button type="submit" class="button button-primary project-search__btn">Cari</button>
                     </form>
 
-                    <!-- Loading State -->
-                    <div id="loading" class="empty-state hide">
-                        <p>Memuat projects...</p>
-                    </div>
-
-                    <!-- Error State -->
-                    <div id="error" class="empty-state hide">
-                        <p>Gagal memuat data projects. Silakan coba lagi.</p>
-                    </div>
-
-                    <!-- Empty State -->
-                    <div id="empty" class="empty-state hide">
-                        <p>Belum ada proyek yang ditambahkan atau ditemukan.</p>
-                    </div>
-
-                    <!-- Project Grid -->
-                    <div id="grid" class="experience-grid project-grid hide"></div>
-
-                    {% if title_query %}
-                        <div class="project-search-status">
-                            <span>Hasil pencarian untuk: <strong>"{{ title_query }}"</strong></span>
-                            <span>{{ project_list|length }} proyek ditemukan</span>
-                        </div>
-                    {% endif %}
+                </div>
+                <!-- Loading State -->
+                <div id="loading" class="empty-state hide">
+                    <p>Memuat projects...</p>
                 </div>
 
+                <!-- Error State -->
+                <div id="error" class="empty-state hide">
+                    <p>Gagal memuat data projects. Silakan coba lagi.</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty" class="empty-state hide">
+                    <p>Belum ada proyek yang ditambahkan atau ditemukan.</p>
+                </div>
+
+                <!-- Project Grid -->
+                <div id="grid" class="experience-grid project-grid hide"></div>
+
+                {% if title_query %}
+                    <div class="project-search-status">
+                        <span>Hasil pencarian untuk: <strong>"{{ title_query }}"</strong></span>
+                        <span>{{ project_list|length }} proyek ditemukan</span>
+                    </div>
+                {% endif %}
+
+                {% comment %} 
                 <div class="project-grid">
                     {% for project in project_list %}
                         <article class="project-card">
@@ -127,6 +128,7 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+                    {% endcomment %}
                 </div>
             </div>
         </section>
@@ -258,6 +260,63 @@
             console.error('Error loading projects:', error);
             displayPageSection({ showError: true });
         }
+    }
+
+    const CREATE_PROJECT_ENDPOINT = "{% url 'main:create_project_ajax' %}";
+    const projectForm = document.getElementById('project-form');
+
+    // Membaca nilai cookie, digunakan untuk mengambil token CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Mengirim data form ke server
+    async function addProject(event) {
+        event.preventDefault();
+
+        const submitButton = projectForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(CREATE_PROJECT_ENDPOINT, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                body: new FormData(projectForm),
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                projectForm.reset();
+                closeProjectModal();
+                showToast('Berhasil', 'Proyek baru berhasil ditambahkan!', 'success');
+                fetchProjects(searchInput.value.trim());
+            } else {
+                const errorMessages = result.errors
+                    ? Object.values(result.errors).flat().map(error => error.message)
+                    : [result.message || `Terjadi kesalahan (status ${response.status}).`];
+                showToast('Gagal menambahkan proyek', errorMessages.join(' '), 'error');
+            }
+        } catch (error) {
+            console.error('Error adding project:', error);
+            showToast('Gagal menambahkan proyek', 'Tidak dapat terhubung ke server. Silakan coba lagi.', 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    if (projectForm) {
+        projectForm.addEventListener('submit', addProject);
     }
 
     // Event Handlers untuk Form Search

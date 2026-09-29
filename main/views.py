@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied 
+from django.views.decorators.http import require_POST
+
 import datetime
 
 from main.models import Experience, Project
@@ -175,8 +177,8 @@ def get_projects_json(request):
                 "title": project.title,
                 "description": project.description,
                 "tech_stack": project.tech_stack,
-                "project_url": project.project_url,
-                "project_image_url": project.project_image_url,
+                "project_url": project.link,
+                "project_image_url": project.thumbnail,
                 "star_count": starred_users.count(),
                 "is_starred": is_starred,
                 "starred_by_names": starred_by_names,
@@ -261,3 +263,21 @@ def toggle_like(request, experience_id):
             experience.liked_by.add(request.user)
 
     return redirect("main:show_experience")
+
+@require_POST
+def create_project_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Hanya pemilik portofolio yang dapat menambahkan proyek."},
+            status=403,
+        )
+
+    form = ProjectForm(request.POST)
+    if form.is_valid():
+        project = form.save()
+        return JsonResponse(
+            {"message": "Proyek berhasil ditambahkan.", "pk": str(project.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
