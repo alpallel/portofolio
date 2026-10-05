@@ -41,19 +41,11 @@ def is_editor(user):
 
 
 def show_experience(request):
-    json_response = get_experiences_json(request)
-
-    experiences = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    experiences = [experience.object for experience in experiences]
     title_query = request.GET.get("title", "").strip()
 
     context = {
         "name": "Alfarrel Ersya Balawa",
         "short_name": "Alfarrel",
-        "experience_list": experiences,
         "title_query": title_query,
         "is_editor": is_editor(request.user),
     }
@@ -103,13 +95,40 @@ def edit_experience(request, experience_id):
 
 def get_experiences_json(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.all()
+    experiences = Experience.objects.prefetch_related("liked_by").all()
 
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
 
-    experiences_json = serializers.serialize("json", experiences, use_natural_foreign_keys=True)
-    return HttpResponse(experiences_json, content_type="application/json")
+    data = []
+    for experience in experiences:
+        liked_users = experience.liked_by.all()
+        is_liked = request.user in liked_users if request.user.is_authenticated else False
+        liked_by_names = ", ".join([u.username for u in liked_users])
+        can_edit = request.user.is_superuser or is_editor(request.user)
+        can_delete = request.user.is_superuser
+
+        data.append({
+            "pk": str(experience.id),
+            "fields": {
+                "title": experience.title,
+                "description": experience.description,
+                "category": experience.category,
+                "category_display": experience.get_category_display(),
+                "thumbnail": experience.thumbnail,
+                "organization": experience.organization,
+                "started_at_string": experience.started_at_string,
+                "ended_at_string": experience.ended_at_string,
+                "is_ongoing": experience.is_ongoing,
+                "likes_count": liked_users.count(),
+                "is_liked": is_liked,
+                "liked_by_names": liked_by_names,
+                "can_edit": can_edit,
+                "can_delete": can_delete,
+            }
+        })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
