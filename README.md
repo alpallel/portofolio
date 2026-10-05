@@ -74,6 +74,27 @@ Deployed at: https://alfarrel-ersya-myportofolio.pws.cs.ui.ac.id/
 3. makemigrations membandingkan models.py yang sekarang dengan yang sudah tersimpan (migrate). migrate membaca perubahan dari makemigrations kemudian memperbarui struktur tabel di SQL. Contohnya ada ketika saya menambahkan model projects. Ketika saya membuat model/atribut model baru, saya perlu melakukan makemigrations dan migrate terlebih dahulu sebelum data baru tersebut bisa disimpan di database dan ditampilkan.
 
 
+### Tugas 5
+
+1. Debouncing adalah pembatasan frekuensi pemanggilan fungsi dengan menunda pemanggilan fungsi tersebut sampai jeda waktu tertentu sejak event terakhir terjadi, dan apabila fungsi dicoba untuk dipanggil kembali sebelum jeda waktu selesai, timer sebelumnya akan dibatalkan oleh 'clearTimeout' dan dimulai kembali dari awal oleh 'setTimeout'.
+   - Pentingnya pada Pencarian AJAX:
+     - Mencegah request flooding: Tanpa debouncing, fungsi akan terpanggil sebanyak jumlah ketikan dari pengguuserna 
+     - Menghemat sumber daya server dan bandwidth client
+     - Menghindari race condition
+
+2. Operator 'await' digunakan di dalam fungsi 'async' untuk menghentikan sementara eksekusi baris kode berikutnya sampai promise dari pemanggilan fungsi async seperti fetch() atau response.json() selesai.
+   - Jika tidak menggunakan 'await':
+     - Fungsi fetch() akan langsung mengembalikan objek promise yang masih berstatus pending, bukan objek response.
+     - Jika variabel yang menampung promise tersebut langsung dipanggil dengan metode response.json(), JavaScript akan melempar exception atau menghasilkan nilai undefined karena operasinya belum selesai diproses.
+     - Alur eksekusi JavaScript akan terus berjalan ke baris-baris manipulasi DOM di bawahnya sebelum data dari server berhasil diunduh, mengakibatkan interface gagal menampilkan data atau crash.
+
+3. XSS adalah kelemahan keamanan web dimana penyerang berhasil menginject script ke dalam data aplikasi web. Kode bisa digunakan untuk dieksekusi secara otomatis oleh browser user lain saat melihat halaman terkait, memungkinkan penyerang mencuri session cookies, merusak tampilan web, dll.
+   - Mengapa data via AJAX/JavaScript lebih rentan dibandingkan template Django:
+     - Django Template Engine memiliki sistem keamanan bawaan yaitu "automatic HTML escaping" yang aktif secara default pada setiap variabel konteks template. Karakter-karakter khusus HTML seperti '<', '>', '&', ' " ', dan <'> secara otomatis diubah menjadi entitas HTML aman (`&lt;`, `&gt;`, dll), sehingga teks tidak dianggap sebagai tag oleh browser.
+     - Pada AJAX / JavaScript, data diterima dalam format JSON yg masih mentah. Saat developer memperbarui DOM menggunakan manipulasi teks langsung seperti properti innerHTML, browser secara default tidak melakukan auto-escaping.
+
+---
+
 ## AI Disclosure
 Saya memakai Gemini AI untuk membantu saya mewujudkan ide, tema, dan debbugging, terutama untuk styling css. Hasil dari AI kemudian saya improve dan saya terapkan sebagai referensi untuk styling elemen-elemen lainnya. Sebagian besar AI digunakan pada section 'about me' untuk saya belajar styling dengan css. Sisanya AI  digunakan untuk debugging kecil ketika saya stuck.
 
