@@ -18,6 +18,18 @@
                     {% endif %}
                 </div>
 
+                <div class="project-search-wrapper">
+                    <form id="experience-search-form" class="project-search">
+                        <input type="search"
+                            id="search-input"
+                            name="title"
+                            value="{{ title_query }}"
+                            placeholder="Cari berdasarkan nama pengalaman atau organisasi"
+                            class="project-search__input"
+                            aria-label="Cari berdasarkan nama pengalaman">
+                    </form>
+                </div>
+
                 <!-- Loading State -->
                 <div id="loading" class="empty-state hide">
                     <p>Memuat pengalaman...</p>
@@ -49,6 +61,10 @@
     const errorState = document.getElementById('error');
     const emptyState = document.getElementById('empty');
     const gridContainer = document.getElementById('grid');
+    const searchForm = document.getElementById('experience-search-form');
+    const searchInput = document.getElementById('search-input');
+    const SEARCH_DEBOUNCE_DELAY = 300;
+    let searchDebounceTimer;
 
     // Membaca nilai cookie untuk CSRF
     function getCookie(name) {
@@ -226,7 +242,30 @@
         }
     }
 
+    // Event Handlers untuk Form Search
+    function searchExperiences() {
+        fetchExperiences(searchInput ? searchInput.value.trim() : "");
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener("input", function() {
+            clearTimeout(searchDebounceTimer);
+
+            searchDebounceTimer = setTimeout(function() {
+                searchExperiences();
+            }, SEARCH_DEBOUNCE_DELAY);
+        });
+    }
+
+    if (searchForm) {
+        searchForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            clearTimeout(searchDebounceTimer);
+            searchExperiences();
+        });
+    }
+
     // Mulai memuat data pengalaman saat halaman terbuka
-    fetchExperiences();
+    fetchExperiences(searchInput ? searchInput.value.trim() : "");
     </script>
 {% endblock content %}

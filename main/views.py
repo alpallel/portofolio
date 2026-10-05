@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied 
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 import datetime
 
@@ -98,7 +99,9 @@ def get_experiences_json(request):
     experiences = Experience.objects.prefetch_related("liked_by").all()
 
     if title_query:
-        experiences = experiences.filter(title__icontains=title_query)
+        experiences = experiences.filter(
+            Q(title__icontains=title_query) | Q(organization__icontains=title_query)
+        )
 
     data = []
     for experience in experiences:
