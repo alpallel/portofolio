@@ -22,7 +22,7 @@ class ProjectAPITest(APITestCase):
         self.star_url = reverse("api:project-star", args=[self.project.id])
         self.payload = {
             "title": "New project", "description": "A useful app", "tech_stack": "Python",
-            "project_url": "https://example.com/", "project_image_url": "",
+            "link": "https://example.com/", "thumbnail": "",
         }
 
     def test_public_list_and_detail(self):
@@ -64,7 +64,7 @@ class ProjectAPITest(APITestCase):
         for changes, field in [
             ({"title": "   "}, "title"),
             ({"title": '<img src="x" onerror="alert(1)">'}, "title"),
-            ({"project_url": "javascript:alert(1)"}, "project_url"),
+            ({"link": "javascript:alert(1)"}, "link"),
         ]:
             response = self.client.post(self.list_url, {**self.payload, **changes}, format="json")
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

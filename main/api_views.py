@@ -31,6 +31,7 @@ def project_list(request):
     serializer.save()
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 @api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrReadOnly])
@@ -53,6 +54,7 @@ def project_detail(request, project_id):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
+
 
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication])

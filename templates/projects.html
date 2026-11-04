@@ -10,11 +10,12 @@
                 <div class="project-header">
                     <h1 class="page-title">Projects</h1>
                     {% if user.is_superuser %}
-                        <a href="{% url 'main:create_project' %}"
-                        class="button project-add-button">
+                        <button type="button"
+                                class="button project-add-button"
+                                popovertarget="add-project-modal">
                             <span aria-hidden="true">+</span>
                             Tambah Proyek
-                        </a>
+                        </button>
                     {% endif %}
                 </div>
 
@@ -49,13 +50,6 @@
 
                 <!-- Project Grid -->
                 <div id="grid" class="experience-grid project-grid hide"></div>
-
-                {% if title_query %}
-                    <div class="project-search-status">
-                        <span>Hasil pencarian untuk: <strong>"{{ title_query }}"</strong></span>
-                        <span>{{ project_list|length }} proyek ditemukan</span>
-                    </div>
-                {% endif %}
 
                 {% comment %} 
                 <div class="project-grid">
@@ -129,7 +123,6 @@
                         </div>
                     {% endfor %}
                     {% endcomment %}
-                </div>
             </div>
         </section>
     </main>
@@ -138,6 +131,7 @@
         {% include "components/project_form_modal.html" %}
     {% endif %}
 
+    {% csrf_token %}
     <script>
         const BASE_PROJECTS_ENDPOINT = "{% url 'api:project-list' %}";
         const DETAIL_PROJECT_ENDPOINT = "{% url 'api:project-detail' '00000000-0000-0000-0000-000000000000' %}";
@@ -183,10 +177,10 @@
         function buildProjectCardElement(project) {
             const article = document.createElement('article');
             article.className = 'experience-card';
-            const image = project.project_image_url
-                ? `<img src="${escapeHtml(project.project_image_url)}" alt="${escapeHtml(project.title)}" class="project-image">` : '';
-            const link = project.project_url
-                ? `<a href="${escapeHtml(project.project_url)}" class="button">Open project</a>` : '';
+            const image = project.thumbnail
+                ? `<img src="${escapeHtml(project.thumbnail)}" alt="${escapeHtml(project.title)}" class="project-image">` : '';
+            const link = project.link
+                ? `<a href="${escapeHtml(project.link)}" class="button">Open project</a>` : '';
             const star = IS_AUTHENTICATED
                 ? `<button type="button" class="button button-star${project.is_starred ? ' is-starred' : ''}"
                     data-action="star" data-id="${escapeHtml(project.id)}"
@@ -254,7 +248,7 @@
             try {
                 const fields = new FormData(projectForm);
                 const payload = Object.fromEntries([
-                    'title', 'description', 'tech_stack', 'project_url', 'project_image_url',
+                    'title', 'description', 'tech_stack', 'link', 'thumbnail',
                 ].map(name => [name, fields.get(name)]));
                 await writeProject(BASE_PROJECTS_ENDPOINT, 'POST', payload);
                 projectForm.reset();
