@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from main.views import *
 
@@ -24,4 +24,9 @@ urlpatterns = [
     path("projects/<uuid:project_id>/delete/",delete_project,name="delete_project"),
     path("projects/<uuid:project_id>/star/", toggle_star, name="toggle_star"),
     path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
+]
+
+urlpatterns += [
+    path("api/v1/", include("main.api_urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]
