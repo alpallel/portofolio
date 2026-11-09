@@ -1,0 +1,75 @@
+<div id="edit-experience-modal"
+     class="project-form-modal"
+     popover="auto"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="edit-experience-modal-title">
+    <button type="button"
+            class="project-form-modal__backdrop"
+            popovertarget="edit-experience-modal"
+            popovertargetaction="hide"
+            aria-label="Tutup form edit pengalaman"></button>
+
+    <div class="project-form-modal__content">
+        <button type="button"
+                class="project-form-modal__close"
+                popovertarget="edit-experience-modal"
+                popovertargetaction="hide"
+                aria-label="Tutup form edit pengalaman">×</button>
+
+        <h2 id="edit-experience-modal-title">Edit Pengalaman</h2>
+        <form id="edit-experience-form" class="project-form">
+            <input type="hidden" id="edit-experience-id" name="id">
+
+            <div class="form-group">
+                <label for="edit-title">Nama Pengalaman</label>
+                <input type="text" id="edit-title" name="title" required maxlength="255">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-organization">Organisasi Pengalaman</label>
+                <input type="text" id="edit-organization" name="organization" maxlength="255">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-category">Kategori Pengalaman</label>
+                <select id="edit-category" name="category">
+                    <option value="internship">Internship</option>
+                    <option value="research">Research</option>
+                    <option value="volunteer">Volunteer</option>
+                    <option value="part-time">Part-Time</option>
+                    <option value="full-time">Full-Time</option>
+                    <option value="freelance">Freelance</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-started-at-string">Tanggal Mulai</label>
+                <input type="text" id="edit-started-at-string" name="started_at_string" maxlength="20" placeholder="Apr 2026">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-ended-at-string">Tanggal Berakhir</label>
+                <input type="text" id="edit-ended-at-string" name="ended_at_string" maxlength="20" placeholder="Sep 2026 (kosongkan jika masih berlangsung)">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-thumbnail">URL Gambar Pengalaman</label>
+                <input type="url" id="edit-thumbnail" name="thumbnail" placeholder="https://example.com/logo.png">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-description">Deskripsi Pengalaman</label>
+                <textarea id="edit-description" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="project-form-modal__actions">
+                <button type="button"
+                        class="button button-secondary"
+                        popovertarget="edit-experience-modal"
+                        popovertargetaction="hide">Batal</button>
+                <button type="submit" class="button button-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
