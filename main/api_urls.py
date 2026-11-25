@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.authtoken import views as authtoken_views
 
 from main import api_views
 
@@ -15,4 +16,7 @@ urlpatterns = [
     path("experience/<uuid:experience_id>/", api_views.experience_detail),
     path("experience/<uuid:experience_id>/like/", api_views.experience_like),
     path("experience/<uuid:experience_id>/star/", api_views.experience_like),
+
+    path("auth/token/", authtoken_views.obtain_auth_token, name="api_token_auth"),
+    path("auth/logout/", api_views.api_logout, name="api_logout"),
 ]
